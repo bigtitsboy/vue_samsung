@@ -641,7 +641,7 @@ export default {
     this.turnsum++
   },
   mounted () {
-    this.turninerval = setInterval(this.interval, 1500)
+    this.turninerval = setInterval(this.interval, 2500)
   }
 }
 </script>
