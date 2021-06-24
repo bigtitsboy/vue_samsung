@@ -1,13 +1,23 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <Toplable></Toplable>
+    <!--    <div id="nav">-->
+    <!--      <router-link to="/">Home</router-link>-->
+    <!--      |-->
+    <!--      <router-link to="/about">About</router-link>-->
+    <!--    </div>-->
+    <!--    <router-view/>-->
   </div>
 </template>
-
+<script>
+import Toplable from '@/components/Toplable'
+export default {
+  name: 'App',
+  components: {
+    Toplable
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
