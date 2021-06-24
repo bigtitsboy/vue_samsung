@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <el-row>
       <el-container>
         <el-header class="logo">
@@ -16,13 +16,13 @@
     </el-row>
     <el-row>
       <el-container>
-        <div @mouseenter="enter" @mouseleave="leave">
+        <div style="z-index: 90" @mouseenter="enter" @mouseleave="leave">
           <el-main style="position: absolute;margin: 5px 10% 5px 9%">
             <el-button @click="less" circle icon="el-icon-arrow-left"
-                       style="position: absolute;left: 2%;top: 50%;opacity: 0.5;background-color: black;color: white"></el-button>
+                       style="position: absolute;left: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
             <img :src="turnurl" alt="" width="100%" height="100%">
             <el-button @click="add" circle icon="el-icon-arrow-right"
-                       style="position: absolute;right: 2%;top: 50%;opacity: 0.5;background-color: black;color: white"></el-button>
+                       style="position: absolute;right: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
           </el-main>
         </div>
       </el-container>
@@ -82,7 +82,7 @@
       <el-container>
         <div>
           <el-main style="width: 1800px;">
-            <img  :src="phoneimgs[buttonindex].path" >
+            <img :src="phoneimgs[buttonindex].path">
           </el-main>
         </div>
       </el-container>
@@ -250,8 +250,12 @@
     </el-row>
     <el-row class="test" style="margin-top: 140px">
       <el-container>
-        <el-header class="test" style="margin: 2px;font-size: 40px;font-weight: bolder;color: black">Explore #DoWhatYouCant</el-header>
-        <el-header class="test" style="margin: 2px;"><a href="https://www.samsung.com/cn/explore/" style="text-decoration: underline;color: black">查看更多</a></el-header>
+        <el-header class="test" style="margin: 2px;font-size: 40px;font-weight: bolder;color: black">Explore
+          #DoWhatYouCant
+        </el-header>
+        <el-header class="test" style="margin: 2px;"><a href="https://www.samsung.com/cn/explore/"
+                                                        style="text-decoration: underline;color: black">查看更多</a>
+        </el-header>
         <el-main class="test" style="width: 1392px;height: 766px;margin: 2px 2px 2px 255px;">
           <finally style="color: black"></finally>
         </el-main>
@@ -411,7 +415,7 @@ export default {
       ],
       turninerval: null,
       turnsum: 0,
-      turnurl: null,
+      turnurl: 0,
       myimgs: [
         { path: require('../assets/sumsung.png') }
       ],
@@ -552,37 +556,76 @@ export default {
       e.target.className = 'select'
     },
     add: function () {
-      if (this.turnsum === 2) {
+      window.clearInterval(this.turninerval)
+      // console.log(1)
+      // console.log(this.turnsum)
+      // this.turnsum++
+      if (this.turnsum === 3) {
         this.turnsum = 0
-      } else {
-        this.turnsum += 2
+      }
+      switch (this.turnsum) {
+        case 0:
+          console.log(this.turnsum)
+          this.turninerval = setInterval(this.interval, 2500)
+          break
+        case 1:
+          console.log(this.turnsum)
+          this.turninerval = setInterval(this.interval, 2500)
+          break
+        case 2:
+          console.log(this.turnsum)
+          this.turninerval = setInterval(this.interval, 2500)
+          break
       }
     },
     less: function () {
-      if (this.turnsum < 0) {
-        this.turnsum = 2
-      } else {
-        this.turnsum--
+      window.clearInterval(this.turninerval)
+      // console.log(1)
+      console.log(this.turnsum)
+      // this.turnsum -= 2
+      // if (this.turnsum === 0) {
+      //   this.turnsum = 1
+      // }
+      // if (this.turnsum === 2) {
+      //   this.turnsum = 0
+      // }
+      // if (this.turnsum === 1) {
+      //   this.turnsum = 2
+      // }
+      switch (this.turnsum) {
+        case 0:
+          this.turnsum = 1
+          // console.log(this.turnsum)
+          this.turninerval = setInterval(this.interval, 2500)
+          break
+        case 1:
+          this.turnsum = 2
+          // console.log(this.turnsum)
+          this.turninerval = setInterval(this.interval, 2500)
+          break
+        case 2:
+          this.turnsum = 0
+          // console.log(this.turnsum)
+          this.turninerval = setInterval(this.interval, 2500)
+          break
       }
     },
     enter: function () {
       clearInterval(this.turninerval)
     },
     leave: function () {
-      this.turninerval = setInterval(() => {
-        if (this.turnsum < this.turnimgs.length && this.turnsum >= 0) {
-          if (this.turnsum > 2) {
-            this.turnsum = 0
-          }
-          this.turnurl = this.turnimgs[this.turnsum].path
-          this.turnsum++
-          if (this.turnsum > 2) {
-            this.turnsum = 0
-          }
-        } else {
+      clearInterval(this.turninerval)
+      this.turninerval = setInterval(this.interval, 2500)
+    },
+    interval: function () {
+      if (this.turnsum < this.turnimgs.length) {
+        this.turnurl = this.turnimgs[this.turnsum].path
+        this.turnsum++
+        if (this.turnsum === 3) {
           this.turnsum = 0
         }
-      }, 1500)
+        // console.log(this.turnsum)
+      }
     }
   },
   components: {
@@ -593,16 +636,12 @@ export default {
     Second,
     first
   },
+  created () {
+    this.turnurl = this.turnimgs[this.turnsum].path
+    this.turnsum++
+  },
   mounted () {
-    this.turninerval = setInterval(() => {
-      if (this.turnsum < this.turnimgs.length) {
-        this.turnurl = this.turnimgs[this.turnsum].path
-        this.turnsum++
-        if (this.turnsum === 3) {
-          this.turnsum = 0
-        }
-      }
-    }, 2500)
+    this.turninerval = setInterval(this.interval, 1500)
   }
 }
 </script>
