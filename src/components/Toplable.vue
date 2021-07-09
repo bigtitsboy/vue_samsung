@@ -3,33 +3,62 @@
     <el-row>
       <el-container>
         <el-header class="logo">
-          <el-col :span="12" style="padding-left: 10% ;line-height: 80px">
-            <img :src="myimgs[0].path">
+          <el-col :span="12" style="padding-left: 10% ;line-height: 80px;">
+            <img :src="myimgs[0].path" style="float: left;padding-top: 27px;padding-right: 50px">
+            <ul>
+              <li v-for="(item,index) in head1" :key="item"
+                  style="font-size: 15px;font-weight: bolder;margin-right: 20px">
+                <span @mouseenter="spanchange($event),listshow(index+1)" :ref="item.slice(0,2)" v-html="item"
+                      class="spanleave">
+                </span>
+              </li>
+              <!--              <div style="clear:both;"></div>-->
+              <!--                <m1 v-show="m1show" style="position: absolute;z-index: 1000;margin-top: 50px;margin-left: -19.3%"></m1>-->
+            </ul>
           </el-col>
           <el-col :span="12" style="padding-right: 15%;text-align: right;line-height: 80px">
-            <i class="el-icon-search ico"></i>
-            <i class="el-icon-shopping-cart-2 ico"></i>
-            <i class="el-icon-s-grid ico"></i>
+            <ul style="float: right" @mouseleave="spanclear">
+              <li v-for="(item) in head2" :key="item" style="font-size: 15px;font-weight: bolder;margin-right: 20px">
+                <span @mouseenter="spanchange" :ref="item.slice(0,2)" v-html="item"
+                      class="spanleave"></span>
+              </li>
+              <i style="font-size: 20px" class="el-icon-search ico"></i>
+              <!--              <div v-html="html1"></div>-->
+              <div style="clear:both;"></div>
+            </ul>
+            <!--            <i class="el-icon-shopping-cart-2 ico"></i>-->
+            <!--            <i class="el-icon-s-grid ico"></i>-->
           </el-col>
         </el-header>
+        <M1 @listleave="listleave" v-show="m1show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M1>
+        <M2 @mouseleave.native="listleave" v-show="m2show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M2>
+        <M3 @mouseleave.native="listleave" v-show="m3show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M3>
+        <M4 @mouseleave.native="listleave" v-show="m4show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M4>
       </el-container>
     </el-row>
     <el-row>
       <el-container>
-        <div style="z-index: 90" @mouseenter="enter" @mouseleave="leave">
-          <el-main style="position: absolute;margin: 5px 10% 5px 9%">
-            <el-button @click="less" circle icon="el-icon-arrow-left"
-                       style="position: absolute;left: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
-            <img :src="turnurl" alt="" width="100%" height="100%">
-            <el-button @click="add" circle icon="el-icon-arrow-right"
-                       style="position: absolute;right: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
-          </el-main>
-        </div>
+        <transition name="turn">
+          <!--        <transition enter-active-class="animate__animated animate__fadeIn"-->
+          <!--                    leave-active-class="animate__animated animate__fadeOut" >-->
+          <div v-show="flag" style="z-index: 90" @mouseenter="enter" @mouseleave="leave">
+            <el-main style="position: absolute;margin: 5px 10% 5px 9%">
+              <el-button @click="less" circle icon="el-icon-arrow-left"
+                         style="position: absolute;left: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
+              <img :src="turnurl" style="margin-top: 50px" alt="" width="100%" height="100%">
+              <!--            <transition name="turn">-->
+              <!--              <img v-show="flag" :src="turnurl" alt="" width="100%" height="100%">-->
+              <!--            </transition>-->
+              <el-button @click="add" circle icon="el-icon-arrow-right"
+                         style="position: absolute;right: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
+            </el-main>
+          </div>
+        </transition>
       </el-container>
     </el-row>
     <el-row>
       <el-container>
-        <el-header style="position: relative;margin: 42% 10% 5px 40%">
+        <el-header style="position: relative;margin: 45% 10% 5px 40%">
           <div style="position: absolute;font-size: 40px;color: black;"><strong style="padding-left: 80px">移动产品</strong>
           </div>
         </el-header>
@@ -240,12 +269,17 @@
         </el-header>
         <el-header style="height: 700px;width: 1420px;margin: 10px 240px 10px 240px;">
           <div style="margin-top: 0px">
-            <first v-show="fistclick"></first>
-            <second v-show="secondclick"></second>
-            <third v-show="thirdclick"></third>
-            <fourth v-show="fourthclick"></fourth>
+            <transition name="my">
+              <first :key="'t1'" v-show="fistclick"></first>
+            </transition>
+            <transition-group>
+              <second :key="'t2'" v-show="secondclick"></second>
+              <third :key="'t3'" v-show="thirdclick"></third>
+              <fourth :key="'t4'" v-show="fourthclick"></fourth>
+            </transition-group>
           </div>
         </el-header>
+        <!--        <button style="z-index: 100" @click="fistclick=!fistclick">fade</button>-->
       </el-container>
     </el-row>
     <el-row class="test" style="margin-top: 140px">
@@ -278,10 +312,34 @@ import Third from '@/components/third'
 import Fourth from '@/components/fourth'
 import Finally from '@/components/finally'
 import Search from '@/components/search'
+import 'animate.css'
+import M1 from '@/components/m1'
+import M2 from '@/components/m2'
+import M3 from '@/components/m3'
+import M4 from '@/components/m4'
 
 export default {
   data: function () {
     return {
+      m1show: false,
+      m2show: false,
+      m3show: false,
+      m4show: false,
+      // html1: '<i style="font-size: 20px" class="el-icon-search ico"></i>',
+      head1: [
+        '手机/平板',
+        '电视/影音',
+        '家电/智家',
+        '电脑/办公/存储',
+        '最新活动'
+      ],
+      head2: [
+        'Explore',
+        '网上商城' + '<i  class="el-icon-top-right ico"></i>',
+        '售后服务',
+        '商用解决方案'
+      ],
+      flag: true,
       fistclick: true,
       secondclick: false,
       thirdclick: false,
@@ -432,7 +490,99 @@ export default {
       ]
     }
   },
+  // head1: [
+  //   '手机/平板',
+  //   '电视/影音',
+  //   '家电/智家',
+  //   '电脑/办公/存储',
+  //   '最新活动'
+  // ],
+  // head2: [
+  //   'Explore',
+  //   '网上商城' + '<i  class="el-icon-top-right ico"></i>',
+  //   '售后服务',
+  //   '商用解决方案'
+  // ],
   methods: {
+    listleave: function (e) {
+      // console.log(e.target.getAttribute('name'))
+      this.m1show = false
+      this.m2show = false
+      this.m3show = false
+      this.m4show = false
+      // console.log(e.target.style)
+      // e.target.style.display = 'none'
+      this.$refs.手机[0].className = 'spanleave'
+      this.$refs.电视[0].className = 'spanleave'
+      this.$refs.家电[0].className = 'spanleave'
+      this.$refs.电脑[0].className = 'spanleave'
+      this.$refs.最新[0].className = 'spanleave'
+      this.$refs.Ex[0].className = 'spanleave'
+      this.$refs.网上[0].className = 'spanleave'
+      this.$refs.售后[0].className = 'spanleave'
+      this.$refs.商用[0].className = 'spanleave'
+    },
+    // m1show: false,
+    // m2show: false,
+    // m3show: false,
+    // m4show: false,
+    listshow: function (index) {
+      this.m1show = false
+      this.m2show = false
+      this.m3show = false
+      this.m4show = false
+      switch (index) {
+        case 1:
+          this.m1show = true
+          break
+        case 2:
+          this.m2show = true
+          break
+        case 3:
+          this.m3show = true
+          break
+        case 4:
+          this.m4show = true
+          break
+        case 5:
+          break
+      }
+    },
+    spanclear: function (e) {
+      this.$refs.手机[0].className = 'spanleave'
+      this.$refs.电视[0].className = 'spanleave'
+      this.$refs.家电[0].className = 'spanleave'
+      this.$refs.电脑[0].className = 'spanleave'
+      this.$refs.最新[0].className = 'spanleave'
+      this.$refs.Ex[0].className = 'spanleave'
+      this.$refs.网上[0].className = 'spanleave'
+      this.$refs.售后[0].className = 'spanleave'
+      this.$refs.商用[0].className = 'spanleave'
+      // this.m1show = !this.m1show
+    },
+    spanchange: function (e) {
+      this.$refs.手机[0].className = 'spanleave'
+      this.$refs.电视[0].className = 'spanleave'
+      this.$refs.家电[0].className = 'spanleave'
+      this.$refs.电脑[0].className = 'spanleave'
+      this.$refs.最新[0].className = 'spanleave'
+      this.$refs.Ex[0].className = 'spanleave'
+      this.$refs.网上[0].className = 'spanleave'
+      this.$refs.售后[0].className = 'spanleave'
+      this.$refs.商用[0].className = 'spanleave'
+      e.target.className = 'spantouch'
+      // this.m1show = !this.m1show
+      // this.head1.forEach((item) => {
+      //   // console.log(item)
+      //   console.log(this.$refs.item)
+      // })
+      // this.$refs.
+      // console.log(this.$refs)
+      // var mystring1 = this.head1[0]
+      // console.log(this.$refs)
+      // console.log(this.$refs.售后服务[0])
+      // console.log(this.$refs.售后服务[0].className)
+    },
     buttonchange: function (e) {
       this.$refs.button1.className = 'changebutton'
       this.$refs.button2.className = 'changebutton'
@@ -556,32 +706,44 @@ export default {
       e.target.className = 'select'
     },
     add: function () {
-      window.clearInterval(this.turninerval)
+      this.interval()
+      // console.log(this.turnsum)
+      // this.turnurl = this.turnimgs[this.turnsum].path
+      // console.log(this.turnimgs.next)
+      // window.clearInterval(this.turninerval)
       // console.log(1)
       // console.log(this.turnsum)
       // this.turnsum++
-      if (this.turnsum === 3) {
-        this.turnsum = 0
-      }
-      switch (this.turnsum) {
-        case 0:
-          console.log(this.turnsum)
-          this.turninerval = setInterval(this.interval, 2500)
-          break
-        case 1:
-          console.log(this.turnsum)
-          this.turninerval = setInterval(this.interval, 2500)
-          break
-        case 2:
-          console.log(this.turnsum)
-          this.turninerval = setInterval(this.interval, 2500)
-          break
-      }
+      // if (this.turnsum === 3) {
+      //   this.turnsum = 0
+      // }
+      // switch (this.turnsum) {
+      //   case 0:
+      //     console.log(this.turnsum)
+      //     this.turnsum = 0
+      //     this.turnurl = this.turnimgs[this.turnsum].path
+      //     // this.turninerval = setInterval(this.interval, 2500)
+      //     break
+      //   case 1:
+      //     console.log(this.turnsum)
+      //     this.turnsum = 1
+      //     this.turnurl = this.turnimgs[this.turnsum].path
+      //
+      //     // this.turninerval = setInterval(this.interval, 2500)
+      //     break
+      //   case 2:
+      //     console.log(this.turnsum)
+      //     this.turnsum = 2
+      //     this.turnurl = this.turnimgs[this.turnsum].path
+      //     // this.turninerval = setInterval(this.interval, 2500)
+      //     break
     },
     less: function () {
-      window.clearInterval(this.turninerval)
+      // console.log(this.turnsum)
+      // this.turnurl = this.turnimgs[this.turnsum].path
+      // window.clearInterval(this.turninerval)
       // console.log(1)
-      console.log(this.turnsum)
+      // console.log(this.turnsum)
       // this.turnsum -= 2
       // if (this.turnsum === 0) {
       //   this.turnsum = 1
@@ -595,18 +757,26 @@ export default {
       switch (this.turnsum) {
         case 0:
           this.turnsum = 1
+          this.interval()
           // console.log(this.turnsum)
-          this.turninerval = setInterval(this.interval, 2500)
+          // this.turnurl = this.turnimgs[this.turnsum].path
+          // this.turninerval = setInterval(this.interval, 2500)
           break
         case 1:
           this.turnsum = 2
+          // this.turnurl = this.turnimgs[this.turnsum].path
+          this.interval()
+
           // console.log(this.turnsum)
-          this.turninerval = setInterval(this.interval, 2500)
+          // this.turninerval = setInterval(this.interval, 2500)
           break
         case 2:
           this.turnsum = 0
+          // this.turnurl = this.turnimgs[this.turnsum].path
+          this.interval()
+
           // console.log(this.turnsum)
-          this.turninerval = setInterval(this.interval, 2500)
+          // this.turninerval = setInterval(this.interval, 2500)
           break
       }
     },
@@ -614,21 +784,49 @@ export default {
       clearInterval(this.turninerval)
     },
     leave: function () {
-      clearInterval(this.turninerval)
-      this.turninerval = setInterval(this.interval, 2500)
+      // clearInterval(this.turninerval)
+      // this.interval()
+      this.turninerval = setInterval(this.interval, 5000)
     },
+    // interval1: function () {
+    //   console.log(1)
+    //   if (this.turnsum < this.turnimgs.length) {
+    //     this.turnurl = this.turnimgs[this.turnsum].path
+    //     this.turnsum++
+    //     if (this.turnsum === 3) {
+    //       this.turnsum = 0
+    //     }
+    //     // console.log(this.turnsum)
+    //   }
+    // },
     interval: function () {
       if (this.turnsum < this.turnimgs.length) {
-        this.turnurl = this.turnimgs[this.turnsum].path
-        this.turnsum++
-        if (this.turnsum === 3) {
-          this.turnsum = 0
-        }
+        this.flag = !this.flag
+        setTimeout(() => {
+          this.flag = !this.flag
+          this.turnurl = this.turnimgs[this.turnsum].path
+          this.turnsum++
+          if (this.turnsum === 3) {
+            this.turnsum = 0
+          }
+        }, 300)
         // console.log(this.turnsum)
       }
+      // if (this.turnsum < this.turnimgs.length) {
+      //   this.turnurl = this.turnimgs[this.turnsum].path
+      //   this.turnsum++
+      //   if (this.turnsum === 3) {
+      //     this.turnsum = 0
+      //   }
+      //   // console.log(this.turnsum)
+      // }
     }
   },
   components: {
+    M4,
+    M3,
+    M2,
+    M1,
     Search,
     Finally,
     Fourth,
@@ -641,12 +839,88 @@ export default {
     this.turnsum++
   },
   mounted () {
-    this.turninerval = setInterval(this.interval, 2500)
+    this.turninerval = setInterval(this.interval, 5000)
   }
 }
 </script>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.spantouch {
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 2em;
+  background-color: black;
+  color: white
+}
+
+.spanleave {
+  cursor: pointer;
+  padding: 6px 12px;
+  /*border-radius: 2em;*/
+  /*background-color: black;*/
+  /*color: white*/
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  /*float: left;*/
+  display: inline;
+  vertical-align: middle
+}
+
+.turn-enter,
+.turn-leave-to {
+  opacity: 0;
+}
+
+.turn-enter-active,
+.turn-leave-active {
+  transition: all 0.5s ease;
+}
+
+.my-enter {
+  opacity: 0;
+  transform: translateX(-1420px);
+}
+
+.my-leave-to {
+  opacity: 0;
+  transform: translateX(-1420px);
+}
+
+.my-enter-active,
+.my-leave-active {
+  transition: all 0.5s ease;
+}
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(-1420px);
+}
+
+.v-enter {
+  opacity: 0;
+  transform: translateX(1420px);
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
+}
+
 .changebuttontouch {
   text-decoration: underline;
   cursor: pointer;
@@ -893,4 +1167,5 @@ export default {
   font-size: 18px;
   font-weight: bold;
 }
+
 </style>

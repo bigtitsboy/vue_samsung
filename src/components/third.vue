@@ -18,8 +18,7 @@
 ">
       <img :src="imgs[3].path" class="imgnormal" @mouseover="bigger" @mouseleave="normal">
     </div>
-    <div style="float:left;height: 335px;width: 330px;margin-left: 14px;margin-top: 14px;background-color: #E6E6E6;  border-radius: 2em;
-">
+    <div style="float:left;height: 335px;width: 330px;margin-left: 14px;margin-top: 14px;background-color: #E6E6E6;  border-radius: 2em;">
       <img :src="imgs[4].path" class="imgnormal" @mouseover="bigger" @mouseleave="normal">
     </div>
   </div>
