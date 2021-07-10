@@ -30,10 +30,13 @@
             <!--            <i class="el-icon-s-grid ico"></i>-->
           </el-col>
         </el-header>
-        <M1 @listleave="listleave" v-show="m1show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M1>
-        <M2 @mouseleave.native="listleave" v-show="m2show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M2>
-        <M3 @mouseleave.native="listleave" v-show="m3show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M3>
-        <M4 @mouseleave.native="listleave" v-show="m4show" style="position: absolute;z-index: 1000;margin-top: 110px;"></M4>
+        <M1 @listleave="listleave" v-show="m1show" style="position: absolute;z-index: 1000;margin-top: 60px;"></M1>
+        <M2 @mouseleave.native="listleave" v-show="m2show"
+            style="position: absolute;z-index: 1000;margin-top: 60px;"></M2>
+        <M3 @mouseleave.native="listleave" v-show="m3show"
+            style="position: absolute;z-index: 1000;margin-top: 60px;"></M3>
+        <M4 @mouseleave.native="listleave" v-show="m4show"
+            style="position: absolute;z-index: 1000;margin-top: 60px;"></M4>
       </el-container>
     </el-row>
     <el-row>
@@ -45,7 +48,7 @@
             <el-main style="position: absolute;margin: 5px 10% 5px 9%">
               <el-button @click="less" circle icon="el-icon-arrow-left"
                          style="position: absolute;left: 2%;top: 50%;opacity: 0.5;background-color: black;color: white;z-index: 100"></el-button>
-              <img :src="turnurl" style="margin-top: 50px" alt="" width="100%" height="100%">
+              <img :src="turnurl" style="margin-top: 30px" alt="" width="100%" height="100%">
               <!--            <transition name="turn">-->
               <!--              <img v-show="flag" :src="turnurl" alt="" width="100%" height="100%">-->
               <!--            </transition>-->
@@ -56,14 +59,17 @@
         </transition>
       </el-container>
     </el-row>
-    <el-row>
-      <el-container>
-        <el-header style="position: relative;margin: 45% 10% 5px 40%">
-          <div style="position: absolute;font-size: 40px;color: black;"><strong style="padding-left: 80px">移动产品</strong>
-          </div>
-        </el-header>
-      </el-container>
-    </el-row>
+    <div ref="backgroundturn" style="">
+      <el-row>
+        <el-container>
+          <el-header style="position: relative;margin: 45% 10% 5px 40%;">
+            <div style="position: absolute;font-size: 40px;color: black;"><strong
+              style="padding-left: 80px">移动产品</strong>
+            </div>
+          </el-header>
+        </el-container>
+      </el-row>
+    </div>
     <el-row>
       <el-container>
         <el-col :span="23">
@@ -505,6 +511,7 @@ export default {
   // ],
   methods: {
     listleave: function (e) {
+      this.$refs.backgroundturn.style.backgroundColor = ''
       // console.log(e.target.getAttribute('name'))
       this.m1show = false
       this.m2show = false
@@ -527,6 +534,7 @@ export default {
     // m3show: false,
     // m4show: false,
     listshow: function (index) {
+      this.$refs.backgroundturn.style.backgroundColor = 'rgb(82, 82, 82)'
       this.m1show = false
       this.m2show = false
       this.m3show = false
@@ -849,7 +857,6 @@ export default {
   margin: 0;
   padding: 0;
 }
-
 .spantouch {
   cursor: pointer;
   padding: 6px 12px;
