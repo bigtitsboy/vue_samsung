@@ -30,13 +30,16 @@
             <!--            <i class="el-icon-s-grid ico"></i>-->
           </el-col>
         </el-header>
-        <M1 @listleave="listleave" v-show="m1show" style="position: absolute;z-index: 1000;margin-top: 60px;"></M1>
-        <M2 @mouseleave.native="listleave" v-show="m2show"
-            style="position: absolute;z-index: 1000;margin-top: 60px;"></M2>
-        <M3 @mouseleave.native="listleave" v-show="m3show"
-            style="position: absolute;z-index: 1000;margin-top: 60px;"></M3>
-        <M4 @mouseleave.native="listleave" v-show="m4show"
-            style="position: absolute;z-index: 1000;margin-top: 60px;"></M4>
+        <transition-group name="vg" style="position: relative;z-index: 1000;"  >
+        <M1 :key="'M1'" @listleave="listleave" v-show="m1show"
+            style="position: absolute;margin-top: 0px;"></M1>
+        <M2 :key="'M2'" @mouseleave.native="listleave" v-show="m2show"
+            style="position: absolute;margin-top: 0px;"></M2>
+        <M3 :key="'M3'" @mouseleave.native="listleave" v-show="m3show"
+            style="position: absolute;margin-top: 0px;"></M3>
+        <M4 :key="'M4'" @mouseleave.native="listleave" v-show="m4show"
+            style="position: absolute;margin-top: 0px;"></M4>
+        </transition-group>
       </el-container>
     </el-row>
     <el-row>
@@ -856,6 +859,15 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+.vg-enter,
+.vg-leave-to{
+  opacity: 0;
+  transform: translateY(-230px);
+}
+.vg-enter-active,
+.vg-leave-active{
+  transition: all 1s ease;
 }
 .spantouch {
   cursor: pointer;
